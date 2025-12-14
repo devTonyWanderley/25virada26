@@ -82,6 +82,20 @@ public:
         return true;
     }
 
+    T PopFront()
+    {
+        T var;
+        if(Frente)
+        {
+            No<T> *aponta = Frente;
+            var = Frente->Valor;
+            Frente = Frente->Segue;
+            delete aponta;
+            Count--;
+        }
+        return var;
+    }
+
     bool PopBack(T &var)
     {
         if(!Fundo) return false;
@@ -104,6 +118,31 @@ public:
         return true;
     }
 
+    T PopBack()
+    {
+        T var;
+        if(Fundo)
+        {
+            var = Fundo->Valor;
+            No<T> *aponta;
+            if(Count == 1)
+            {
+                aponta = Fundo;
+                Frente = Fundo = nullptr;
+            }
+            else
+            {
+                aponta = Frente;
+                while(aponta->Segue != Fundo) aponta = aponta->Segue;
+                Fundo = aponta;
+                aponta = aponta->Segue;
+            }
+            Count--;
+            delete aponta;
+        }
+        return var;
+    }
+
     bool GetFront(T &var)
     {
         if(!Frente) return false;
@@ -111,11 +150,25 @@ public:
         return true;
     }
 
+    T GetFront()
+    {
+        T var;
+        if(Frente) var = Frente->Valor;
+        return var;
+    }
+
     bool GetBack(T &var)
     {
         if(!Fundo) return false;
         var = Fundo->Valor;
         return true;
+    }
+
+    T GetBack()
+    {
+        T var;
+        if(Fundo) var = Fundo->Valor;
+        return var;
     }
 
     bool GetN(T &var, const uint n)
@@ -133,6 +186,26 @@ public:
         }
         var = Atual->Valor;
         return true;
+    }
+
+    T GetN(const uint n)
+    {
+        T var;
+        if(Count >= n)
+        {
+            if(CAtual > n || !Atual)
+            {
+                Atual = Frente;
+                CAtual = 1;
+            }
+            while(CAtual < n)
+            {
+                Atual = Atual->Segue;
+                CAtual++;
+            }
+            var = Atual->Valor;
+        }
+        return var;
     }
 
     uint Length()
@@ -163,9 +236,19 @@ public:
         return lst.PopFront(var);
     }
 
+    T Pop()
+    {
+        return lst.PopFront();
+    }
+
     bool Primo(T &var)
     {
         return lst.GetFront(var);
+    }
+
+    T Primo()
+    {
+        return lst.GetFront();
     }
 
     uint Lenght()
@@ -196,9 +279,19 @@ public:
         return lst.PopFront(var);
     }
 
+    T Pop()
+    {
+        return lst.PopFront();
+    }
+
     bool Top(T &var)
     {
         return lst.GetFront(var);
+    }
+
+    T Top()
+    {
+        return lst.GetFront();
     }
 
     uint Lenght()

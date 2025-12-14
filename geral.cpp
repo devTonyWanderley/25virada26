@@ -60,8 +60,22 @@ void Geral::on_pbOpera_clicked()
         << linha.right(linha.length() - 20).left(6)
         << '\n'
         << linha.right(linha.length() - 26);
-    */
     Ponto p;
     p.teste("00141013,8634998,53949,628 MF_________");
+    */
+    Lista<QChar> ls;
+    ls.PushFront('0');
+    ls.PushFront('1');
+    ls.PushFront('2');
+    ls.PushFront('3');
+    ls.PushFront('4');
+    ls.PushFront('5');
+    ls.PushFront('6');
+    ls.PushFront('7');
+    ls.PushFront('8');
+    ls.PushFront('9');
+    while(ls.Length())
+        qDebug()
+            << ls.PopFront();
 }
 
