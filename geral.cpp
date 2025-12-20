@@ -62,7 +62,6 @@ void Geral::on_pbOpera_clicked()
         << linha.right(linha.length() - 26);
     Ponto p;
     p.teste("00141013,8634998,53949,628 MF_________");
-    */
     Lista<QChar> ls;
     ls.PushFront('0');
     ls.PushFront('1');
@@ -77,5 +76,84 @@ void Geral::on_pbOpera_clicked()
     while(ls.Length())
         qDebug()
             << ls.PopFront();
+    Pilha<uint> P;
+    if(P.Empty())
+        qDebug()
+            << "Pilha vazia";
+    else
+        qDebug()
+            << "Algo a corrigir";
+    P.Push(0);
+    if(P.Empty())
+        qDebug()
+            << "Algo a corrigir";
+    else
+        qDebug()
+            << P.Lenght()
+            << " elemento depois do push .. o valor é "
+            << P.Top();
+    for(uint i = 1; i <= 9; i++)
+    P.Push(i);
+    if(P.Empty())
+        qDebug()
+            << "Algo a corrigir";
+    else
+        qDebug()
+            << P.Lenght()
+            << " elementos depois do for .. o valor do topo é "
+            << P.Top();
+    uint v;
+    if(!P.Top(v))
+        qDebug()
+            << "Algo a corrigir com a função Top por referência";
+    else
+        qDebug()
+            << "Por referência o topo vale "
+            << v
+            << "\nFazendo o Pop .. "
+            << P.Pop()
+            << "\nEm seguida, revendo o número de elementos .. "
+            << P.Lenght();
+    */
+    //  Fila(), uint Length(), bool Empty(), G Frente(), bool Frente(G &r), G Pop(), bool Pop(G &r)
+    //  com a fila vazia:
+    Fila<uint> F;
+    uint v;
+    if(F.Empty())
+    {
+        qDebug()
+            << "bool Empty() .. ok!"
+            << "\nuint Length() .. " << F.Length()
+            << "\nG Frente() .. " << F.Frente()
+            << "\nbool Frente(G &r) .. " << F.Frente(v)
+            << "\nG Pop() .. " << F.Pop()
+            << "\nbool Pop(G &r) .. " << F.Pop(v);
+    }
+    //  void Push(const G arg)
+    for(uint i = 0; i < 10; i++) F.Push(i);
+    if(F.Empty())
+        qDebug()
+            << "Algo a corrigir";
+    else
+    {
+        qDebug()
+            << "bool Empty() .. ok!"
+            << "\nuint Length() .. " << F.Length()
+            << "\nG Frente() .. " << F.Frente()
+            << "\nbool Frente(G &r) .. " << F.Frente(v)
+            << "\nG Pop() .. " << F.Pop()
+            << "\nbool Pop(G &r) .. " << F.Pop(v);
+        while(!F.Empty())
+        {
+            qDebug()
+                << "bool Empty() .. ok!"
+                << "\nuint Length() .. " << F.Length()
+                << "\nG Frente() .. " << F.Frente()
+                << "\nbool Frente(G &r) .. " << F.Frente(v)
+                << "\nG Pop() .. " << F.Pop()
+                << "\nbool Pop(G &r) .. " << F.Pop(v)
+                << "\nv .. " << v;
+        }
+    }
 }
 

@@ -13,6 +13,12 @@ qt_add_executable(Top
     geral.ui
     interface/arquivo.h interface/arquivo.cpp interface/arquivo.ui
     ED/edgabarito.h ED/edpontos.cpp ED/edpontos.h
+    ED/gno.h
+    ED/gpilha.h
+    ED/gfila.h
+
+
+
 )
 
 qt_add_translations(

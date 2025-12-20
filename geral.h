@@ -13,7 +13,9 @@
 
 #include <QMainWindow>
 #include "interface/arquivo.h"
-#include "ED/edpontos.h"
+//#include "ED/edpontos.h"
+#include "ED/gpilha.h"
+#include "ED/gfila.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Geral;}
