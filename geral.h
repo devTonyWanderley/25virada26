@@ -16,6 +16,7 @@
 //#include "ED/edpontos.h"
 #include "ED/gpilha.h"
 #include "ED/gfila.h"
+#include "ED/glista.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Geral;}

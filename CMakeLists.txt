@@ -16,6 +16,7 @@ qt_add_executable(Top
     ED/gno.h
     ED/gpilha.h
     ED/gfila.h
+    ED/glista.h
 
 
 
