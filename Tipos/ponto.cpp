@@ -134,7 +134,7 @@ double Ponto::GetZ()
     return Cota;
 }
 
-Ponto Ponto::operator = (const Ponto& outro)
+Ponto Ponto::operator = (const Ponto &outro)
 {
     Nome = outro.Nome;
     Atri = outro.Atri;

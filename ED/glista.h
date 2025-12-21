@@ -4,16 +4,16 @@
 #include "gno.h"
 
 template <class G>
-class Lista
+class Lista             //      ..  reformular ar funções (n):
 {
 private:
     Nos<G> *Primo;
-    Nos<G> *Atu;
+    //Nos<G> *Atu;
     Nos<G> *Fim;
     uint Count;
-    uint CAtu;
+    //uint CAtu;
 
-    void Avante()
+    /*void Avante()
     {
         if(Empty()) return;
         uint n = Count - 1;
@@ -42,13 +42,13 @@ private:
                 }
             }
         }
-    }
+    }*/
 
 public:
     Lista()
     {
-        Primo = Atu = Fim = nullptr;
-        Count = CAtu = 0;
+        Primo = Fim = nullptr;
+        Count = 0;
     }
 
     void Pushfront(const G arg)
@@ -58,10 +58,9 @@ public:
         {
             pont->Segue = Primo;
             Primo = pont;
-            CAtu++;
         }
         else
-            Primo = Atu = Fim = pont;
+            Primo = Fim = pont;
         Count++;
     }
 
@@ -74,11 +73,11 @@ public:
             Fim = pont;
         }
         else
-            Primo = Atu = Fim = pont;
+            Primo = Fim = pont;
         Count++;
     }
 
-    void Pushn(uint m, const G arg)
+    /*void Pushn(uint m, const G arg)
     {
         if(!m)
         {
@@ -106,6 +105,31 @@ public:
         pont->Segue = Atu->Segue;
         Atu->Segue = pont;
         Count++;
+    }*/
+
+    void Pushn(uint n, const G arg)
+    {
+        if(!n)
+        {
+            Pushfront(arg);
+            return;
+        }
+        if(n >= Count)
+        {
+            Pushback(arg);
+            return;
+        }
+        uint i = 1;
+        Nos<G> *pontl = Primo;
+        while(i < n)
+        {
+            pontl = pontl->Segue;
+            i++;
+        }
+        Nos<G> *pont = new Nos<G>(arg);
+        pont->Segue = pontl->Segue;
+        pontl->Segue = pont;
+        Count++;
     }
 
     G Getfront()
@@ -128,36 +152,49 @@ public:
         return Fim->Valor;
     }
 
-    G Getn(uint m)
+    /*G Getn(uint m)
     {
-        if(Empty())
+        G r;
+        if(!Empty())
         {
-            G r;
-            return r;
-        }
-        if(!m)
-        {
-            Getfront();
-            return;
-        }
-        if(m >= Count)
-        {
-            Getback();
-            return;
-        }
-        m--;
-        while(CAtu != m)
-        {
-            if(m < CAtu)
+            if(!m)
+                r = Getfront();     //      ..  testar Getfront     ..  parece ok.
+            else if(m >= Count)
+                r = Getback();
+            else
             {
-                Avante();
-            }
-            if(m > CAtu)
-            {
-                Retro();
+                //m--;              //      ..  testar com m=1
+                while(CAtu != m)
+                {
+                    if(m < CAtu)
+                    {
+                        Avante();
+                    }
+                    if(m > CAtu)
+                    {
+                        Retro();
+                    }
+                }
+                r = Atu->Valor;
             }
         }
-        return Atu->Valor;
+        return r;
+    }*/
+
+    G Getn(uint n)
+    {
+        G r;
+        if(Empty()) return r;
+        if(!n) return Getfront();
+        if(n >= Count) return Getback();
+        uint i = 0;
+        Nos<G> *pontl = Primo;
+        while(i < n)
+        {
+            pontl = pontl->Segue;
+            i++;
+        }
+        return pontl->Valor;
     }
 
     G Popfront()
@@ -168,15 +205,9 @@ public:
             Nos<G> *pont = Primo;
             r = pont->Valor;
             if(Primo->Segue)
-            {
-                if(CAtu) CAtu--;
-                else Atu = Atu->Segue;
                 Primo = Primo->Segue;
-            }
             else
-            {
-                Primo = Atu = Fim = nullptr;
-            }
+                Primo = Fim = nullptr;
             delete pont;
             Count--;
         }
@@ -191,22 +222,14 @@ public:
             r = Fim->Valor;
             Nos<G> *pont = Primo;
             if(Fim == Primo)
-            {
-                Primo = Atu = Fim = nullptr;
-                delete pont;
-            }
+                Primo = Fim = nullptr;
             else
             {
                 while(pont->Segue != Fim) pont = pont->Segue;
-                if(CAtu == (Count - 1))
-                {
-                    Atu = pont;
-                    CAtu--;
-                }
                 Fim = pont;
                 pont = pont->Segue;
-                delete pont;
             }
+            delete pont;
             Count--;
         }
         return r;
@@ -224,12 +247,6 @@ public:
     uint Length()
     {
         return Count;
-    }
-
-    uint Atual(G &r)
-    {
-        r = Atu->Valor;
-        return CAtu;
     }
 
     bool Empty()

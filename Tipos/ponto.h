@@ -30,7 +30,7 @@ public:
     double GetX();
     double GetY();
     double GetZ();
-    Ponto operator = (const Ponto& outro);
+    Ponto operator = (const Ponto &outro);
     bool operator == (const Ponto outro);
 };
 
