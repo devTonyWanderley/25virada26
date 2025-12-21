@@ -14,6 +14,7 @@ private:
 
     double LerDouble(QString arg);
     bool LerLinha(QString &ln, QString &id, QString &atr, double &x, double &y, double &z);
+    QString NormaTexto(QString arg);
 public:
     Ponto(const QString id, const QString atr, const double x, const double y, const double z);     //  Valores
     Ponto();                                                                                        //  Vazio

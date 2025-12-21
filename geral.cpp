@@ -9,23 +9,47 @@ Geral::Geral(QWidget *parent): QMainWindow(parent), ui(new Ui::Geral)
     cda = new Arquivo;
 }
 
-Geral::~Geral()
+void Geral::teste()
 {
-    delete ui;
+    //  imprimir linhas separadas:  ..  ok
+    //  imprimir linhas de dados:
+    QString ln, id, atr, tx, ty, tz;
+    while(cda->Buffer.length() > 45)
+    {
+        ln = cda->Buffer.left(45);
+        id = ln.left(8);
+        ln = ln.right(ln.length() - 8);
+        atr = ln.left(8);
+        ln = ln.right(ln.length() - 8);
+        tx = ln.left(10);
+        ln = ln.right(ln.length() - 10);
+        ty = ln.left(11);
+        tz = ln.right(8);
+        cda->Buffer = cda->Buffer.right(cda->Buffer.length() - 46);
+        qDebug()
+            << id << '\t'
+            << atr << '\t'
+            << tx << '\t'
+            << ty << '\t'
+            << tz;
+    }
+    qDebug() << cda->Buffer;
 }
 
 void Geral::on_pbOpera_clicked()
 {
-    /*
     if(cda->Buffer.length())        //  aqui devem entrar mais opções
     {
-        qDebug() << cda->Buffer;
+        qDebug()
+            << cda->Buffer.length();
+        teste();
         return;
     }
     ui->pbOpera->setText("Mostrar arquivo");
     this->setWindowTitle("Verificar fluxo.");
     cda->show();
 
+    /*
     QString linha = "00141013,8634998,53949,628 MF_________";
     Pilha<uint> nc;
     nc.Push(6);
@@ -114,7 +138,6 @@ void Geral::on_pbOpera_clicked()
             << P.Pop()
             << "\nEm seguida, revendo o número de elementos .. "
             << P.Lenght();
-    */
     //  Fila(), uint Length(), bool Empty(), G Frente(), bool Frente(G &r), G Pop(), bool Pop(G &r)
     //  com a fila vazia:
     Fila<uint> F;
@@ -155,5 +178,11 @@ void Geral::on_pbOpera_clicked()
                 << "\nv .. " << v;
         }
     }
+    teste();
+    */
 }
 
+Geral::~Geral()
+{
+    delete ui;
+}

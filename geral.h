@@ -17,6 +17,7 @@
 #include "ED/gpilha.h"
 #include "ED/gfila.h"
 #include "ED/glista.h"
+#include "Tipos/ponto.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Geral;}
@@ -36,5 +37,7 @@ private slots:
 private:
     Ui::Geral *ui;
     Arquivo *cda;
+
+    void teste();
 };
 #endif // GERAL_H

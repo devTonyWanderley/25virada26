@@ -66,7 +66,22 @@ bool Ponto::LerLinha(QString &ln, QString &id, QString &atr, double &x, double &
     ln = ln.right(19);
     y = LerDouble(ln.left(11));
     z = LerDouble(ln.right(8));
+    id = NormaTexto(id);
+    atr = NormaTexto(atr);
     return true;
+}
+
+QString Ponto::NormaTexto(QString arg)
+{
+    QChar c;
+    bool flg = true;
+    while(flg)
+    {
+        c = *arg.data();
+        if((c >= '0' && c <='9') || (c >= 'A' && c <= 'Z') || (c >= 'a' && c <= 'z')) flg = false;
+        else arg = arg.right(arg.length() - 1);
+    }
+    return arg;
 }
 
 void Ponto::SetId(QString id)
