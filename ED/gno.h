@@ -1,6 +1,8 @@
 #ifndef GNO_H
 #define GNO_H
 
+#include <QString>
+
 template <class G>
 class Nos
 {
