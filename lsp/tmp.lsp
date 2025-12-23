@@ -1,0 +1,41 @@
+(regapp "PONTO")
+
+(defun top:get_na(msg dir ex f) (getfiled msg dir ex f))
+
+(defun top:norma_tx(arg / c r)
+  (setq r "")
+  (while (/= (setq c (substr arg 1 1) arg (substr arg 2) c c) "")
+    (if (or (wcmatch c "@") (wcmatch c "#"))
+      (setq r (strcat r c))
+      )
+    )
+  r
+  )
+
+(defun top:get_linha(arg / r)
+  (setq r (list (+ (atof (substr arg 38 4)) (/ (atof (substr arg 43 3)) 1000.0)))
+	r (cons (+ (atof (substr arg 27 7)) (/ (atof (substr arg 35 3)) 1000.0)) r)
+	r (cons (+ (atof (substr arg 17 7)) (/ (atof (substr arg 24 3)) 1000.0)) r)
+	r (cons (top:norma_tx (substr arg 9 8)) r)
+	r (cons (top:norma_tx (substr arg 1 8)) r)
+	)
+  )
+
+(defun top:get_arq(/ na pa ln lt)
+  (if (setq na (top:get_na "msg" "C:/2025/Soft/InstLocal/" "txt" 0))
+    (if (setq pa (open na "r"))
+      (progn
+	(while (setq ln (read-line pa))
+	  (setq lt (cons (top:get_linha ln) lt))
+	  )
+	(setq pa (close pa))
+	)
+      )
+    )
+  (reverse lt)
+  )
+
+(defun c:teste_lsp(/ v)
+  (alert "Ler as linhas")
+  (top:get_arq)
+  )

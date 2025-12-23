@@ -20,6 +20,7 @@ qt_add_executable(Top
     Tipos/ponto.h Tipos/ponto.cpp
     ED/quadro.h ED/quadro.cpp
     Tipos/aresta.h Tipos/aresta.cpp
+    Tipos/splano.h Tipos/splano.cpp
 
 
 
