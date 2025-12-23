@@ -22,4 +22,23 @@ public:
     }
 };
 
+template <class G>
+class Nod
+{
+public:
+    Nod<G> *Smais;
+    Nod<G> *Smenos;
+    G Valor;
+    Nod()
+    {
+        Smais = Smenos = nullptr;
+        Valor = G();
+    }
+    Nod(const G &arg)
+    {
+        Smais = Smenos = nullptr;
+        Valor = G(arg);
+    }
+};
+
 #endif // GNO_H

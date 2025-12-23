@@ -18,6 +18,7 @@
 #include "ED/gfila.h"
 #include "ED/glista.h"
 #include "Tipos/ponto.h"
+#include "ED/garbin.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Geral;}

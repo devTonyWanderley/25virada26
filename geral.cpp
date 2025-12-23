@@ -11,7 +11,33 @@ Geral::Geral(QWidget *parent): QMainWindow(parent), ui(new Ui::Geral)
 
 void Geral::teste()
 {
-    //  imprimir linhas separadas:  ..  ok
+    Arbin<uint> ar;
+    ar.Insere(5);
+    ar.Insere(1);
+    ar.Insere(9);
+    ar.Insere(2);
+    ar.Insere(8);
+    ar.Insere(4);
+    ar.Insere(6);
+    ar.Insere(3);
+    ar.Insere(7);
+    ar.Insere(0);
+    qDebug()
+        << "Tamanho: "
+        << ar.Length()
+        << "\npre:\n";
+    ar.Pre();
+    qDebug()
+        << "Ordenada:\n";
+    ar.Ordenada();
+    qDebug()
+        << "Pos:\n";
+    ar.Pos();
+    qDebug()
+        << "\nh: "
+        << ar.Hight();
+
+    /*  imprimir linhas separadas:  ..  ok
     //  imprimir linhas de dados:   ..  ok
     //  criar lista de pontos e imprimir:   ..  ok
     //      -> criar um ponto com ln:   ..  ok
@@ -39,7 +65,7 @@ void Geral::teste()
             << lp.Getn(i).GetX() << '\t'
             << lp.Getn(i).GetY() << '\t'
             << lp.Getn(i).GetZ();
-    }
+    }*/
 }
 
 void Geral::on_pbOpera_clicked()

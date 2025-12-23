@@ -19,6 +19,7 @@ qt_add_executable(Top
     ED/glista.h
     Tipos/ponto.h Tipos/ponto.cpp
     ED/quadro.h ED/quadro.cpp
+    ED/garbin.h
 
 
 

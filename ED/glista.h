@@ -4,45 +4,12 @@
 #include "gno.h"
 
 template <class G>
-class Lista             //      ..  reformular ar funções (n):
+class Lista
 {
 private:
     Nos<G> *Primo;
-    //Nos<G> *Atu;
     Nos<G> *Fim;
     uint Count;
-    //uint CAtu;
-
-    /*void Avante()
-    {
-        if(Empty()) return;
-        uint n = Count - 1;
-        if(CAtu < n)
-        {
-            Atu = Atu->Segue;
-            CAtu++;
-        }
-    }
-
-    void Retro()
-    {
-        if(Empty()) return;
-        if(CAtu)
-        {
-            uint n = CAtu;
-            CAtu = 0;
-            Atu = Primo;
-            if(n)
-            {
-                n--;
-                while(CAtu < n)
-                {
-                    Atu = Atu->Segue;
-                    CAtu++;
-                }
-            }
-        }
-    }*/
 
 public:
     Lista()
@@ -76,36 +43,6 @@ public:
             Primo = Fim = pont;
         Count++;
     }
-
-    /*void Pushn(uint m, const G arg)
-    {
-        if(!m)
-        {
-            Pushfront(arg);
-            return;
-        }
-        if(m >= Count)
-        {
-            Pushback(arg);
-            return;
-        }
-        m--;
-        while(CAtu != m)
-        {
-            if(m < CAtu)
-            {
-                Avante();
-            }
-            if(m > CAtu)
-            {
-                Retro();
-            }
-        }
-        Nos<G> *pont = new Nos<G>(arg);
-        pont->Segue = Atu->Segue;
-        Atu->Segue = pont;
-        Count++;
-    }*/
 
     void Pushn(uint n, const G arg)
     {
@@ -151,35 +88,6 @@ public:
         }
         return Fim->Valor;
     }
-
-    /*G Getn(uint m)
-    {
-        G r;
-        if(!Empty())
-        {
-            if(!m)
-                r = Getfront();     //      ..  testar Getfront     ..  parece ok.
-            else if(m >= Count)
-                r = Getback();
-            else
-            {
-                //m--;              //      ..  testar com m=1
-                while(CAtu != m)
-                {
-                    if(m < CAtu)
-                    {
-                        Avante();
-                    }
-                    if(m > CAtu)
-                    {
-                        Retro();
-                    }
-                }
-                r = Atu->Valor;
-            }
-        }
-        return r;
-    }*/
 
     G Getn(uint n)
     {
