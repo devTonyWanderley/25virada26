@@ -17,7 +17,8 @@
 #include "ED/gpilha.h"
 #include "ED/gfila.h"
 #include "ED/glista.h"
-#include "Tipos/ponto.h"
+//#include "Tipos/ponto.h"
+#include "Tipos/aresta.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class Geral;}

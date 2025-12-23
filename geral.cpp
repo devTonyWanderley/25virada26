@@ -40,6 +40,21 @@ void Geral::teste()
             << lp.Getn(i).GetY() << '\t'
             << lp.Getn(i).GetZ();
     }
+    //  Instanciar uma aresta
+    Aresta ar(lp.GetPrimo(), "3", "4");
+    Ponto p(ar.GetIni()), q(ar.GetFim());
+    qDebug()
+        << p.GetId() << '\t'
+        << p.GetAtr() << '\t'
+        << p.GetX() << '\t'
+        << p.GetY() << '\t'
+        << p.GetZ();
+    qDebug()
+        << q.GetId() << '\t'
+        << q.GetAtr() << '\t'
+        << q.GetX() << '\t'
+        << q.GetY() << '\t'
+        << q.GetZ();
 }
 
 void Geral::on_pbOpera_clicked()
