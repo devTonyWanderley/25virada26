@@ -1,4 +1,4 @@
-#include "geral.h"
+#include "topografia.h"
 
 #include <QApplication>
 #include <QLocale>
@@ -17,7 +17,7 @@ int main(int argc, char *argv[])
             break;
         }
     }
-    Geral w;
+    Topografia w;
     w.show();
     return a.exec();
 }

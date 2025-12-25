@@ -8,22 +8,9 @@ qt_standard_project_setup()
 qt_add_executable(Top
     WIN32 MACOSX_BUNDLE
     main.cpp
-    geral.cpp
-    geral.h
-    geral.ui
-    interface/arquivo.h interface/arquivo.cpp interface/arquivo.ui
-
-    ED/gno.h
-    ED/gpilha.h
-    ED/gfila.h
-    ED/glista.h
-    Tipos/ponto.h Tipos/ponto.cpp
-    ED/quadro.h ED/quadro.cpp
-    Tipos/aresta.h Tipos/aresta.cpp
-    Tipos/splano.h Tipos/splano.cpp
-
-
-
+    topografia.cpp
+    topografia.h
+    topografia.ui
 )
 
 qt_add_translations(
