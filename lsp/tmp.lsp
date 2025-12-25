@@ -1,8 +1,12 @@
 ;;;	--HEAD--
-(setq #param-leitura '(("PONTO" "Arquivo de pontos" "C:/2025/Soft/InstLocal/" "txt")
-		       ("ARESTA" "Arquivo de arestas" "C:/2025/Soft/InstLocal/" "txt")
-		       ("FACE" "Arquivo de faces" "C:/2025/Soft/InstLocal/" "txt")
+(setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2025/Soft/InstLocal/" "txt")
+		       ("ARESTA" "Abrir arquivo de arestas" "C:/2025/Soft/InstLocal/" "txt")
+		       ("FACE" "Abrir arquivo de faces" "C:/2025/Soft/InstLocal/" "txt")
 		       )
+      #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/2025/Soft/InstLocal/" "txt")
+		      ("ARESTA" "Salvar arquivo de arestas" "C:/2025/Soft/InstLocal/" "txt")
+		      ("FACE" "Salvar arquivo de faces" "C:/2025/Soft/InstLocal/" "txt")
+		      )
       #param-desenho '(("PONTO" "_Pontos" 0.1)
 		       ("ARESTA" "_Arestas")
 		       ("FACE" "_Faces")
@@ -16,13 +20,12 @@
     (regapp (car (nth i #param-leitura)))
     )
   (setq #pontos (top:ler-pontos-do-desenho))
+  (setq #arestas (top:ler-arestas-do-desenho))
   (princ "TMP carregado com sucesso")
   )
 
 ;;;		--I/O--
-;;;			--ARQUIVO--
-(defun top:get_na(msg dir ex f) (getfiled msg dir ex f))
-
+;;;			--MANIPULAR TEXTO--
 (defun top:norma_tx(arg / c r)
   (setq r "")
   (while (/= (setq c (substr arg 1 1) arg (substr arg 2) c c) "")
@@ -41,6 +44,49 @@
 	r (cons (top:norma_tx (substr arg 1 8)) r)
 	)
   )
+
+(defun top:preenche-texto-na-cabeça(tx ch tam)
+  (while (< (strlen tx) tam)
+    (setq tx (strcat ch tx))
+    )
+  tx
+  )
+
+(defun top:preenche-texto-na-cauda(tx ch tam)
+  (while (< (strlen tx) tam)
+    (setq tx (strcat tx ch))
+    )
+  tx
+  )
+
+(defun top:preenche-num-3dec(num tam)
+  (setq num (rtos num 2 3))
+  (if (null (wcmatch num "*`.*"))
+    (setq num (strcat num "."))
+    )
+  (while (null (wcmatch num "*`.???"))
+    (setq num (top:preenche-texto-na-cauda num "0" (+ 1 (strlen num))))
+    )
+  (setq num (top:preenche-texto-na-cabeça num "0" tam))
+  num
+  )
+
+(defun top:ln-ponto-export(arg / id atr x y z)
+  (setq id (top:preenche-texto-na-cabeça (car arg) " " 8)
+	atr (top:preenche-texto-na-cabeça (cadr arg) " " 8)
+	x (top:preenche-num-3dec (car (last arg)) 10)
+	y (top:preenche-num-3dec (cadr (last arg)) 11)
+	z (top:preenche-num-3dec (caddr (last arg)) 8)
+	)
+  (strcat id atr x y z)
+  )
+
+(defun top:ln-aresta-export(arg)
+  (strcat (top:preenche-texto-na-cabeça (car arg) " " 8) (top:preenche-texto-na-cabeça (cadr arg) " " 8))
+  )
+
+;;;			--ARQUIVO--
+(defun top:get_na(msg dir ex f) (getfiled msg dir ex f))
 
 (defun top:ler-arquivo(chave / na pa ln lt)
   (if (setq na (top:get_na
@@ -64,6 +110,27 @@
   (if lt
     (reverse lt)
     (princ)
+    )
+  )
+
+(defun top:exportar-arquivo(chave lt / na pa i)
+  (if (setq na (top:get_na
+		 (cadr (assoc chave #param-leitura))
+		 (caddr (assoc chave #param-leitura))
+		 (nth 3 (assoc chave #param-leitura))
+		 1
+		 )
+	    )
+    (if (setq pa (open na "w"))
+      (progn
+	(while (nth (setq i (if i (1+ i) 0)) lt)
+	  (write-line (nth i lt) pa)
+	  )
+	(setq pa (close pa))
+	)
+      (princ "erro no arquivo\n")
+      )
+    (princ "erro no nome do arquivo\n")
     )
   )
 
@@ -108,6 +175,8 @@
   )
 
 (defun top:ler-pontos-do-desenho() (setq #pontos (top:varre-xdata "PONTO")))
+
+(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))
 
 (defun top:select-pra-aresta(/ n en lt)
   (while (< (setq n (if n n 0)) 6)
@@ -333,6 +402,7 @@
     (princ "erro ao lançar pontos")
     )
   (top:ler-pontos-do-desenho)
+  (top:ler-arestas-do-desenho)
   (princ)
   )
 
@@ -344,12 +414,28 @@
   )
 
 (defun c:lança-pontos-2d()(top:lança-pontos nil))
+  
 (defun c:lança-pontos-3d()(top:lança-pontos 't))
+  
 (defun c:cotas-e-atributos()(top:mostra-cotas-e-atrs))
+  
 (defun c:faz-arestas(/ lt)
   (while (setq lt (top:select-pra-aresta))
     (top:faz-arestas lt)
     )
   (princ)
   )
+
+(defun c:exporta-pontos()
+  (top:ler-pontos-do-desenho)
+  (top:exportar-arquivo "PONTO" (mapcar 'top:ln-ponto-export #pontos))
+  (princ)
+  )
+
+(defun c:exporta-arestas()
+  (top:ler-arestas-do-desenho)
+  (top:exportar-arquivo "ARESTA" (mapcar 'top:ln-aresta-export #arestas))
+  (princ)
+  )
+
 (top:inicia)

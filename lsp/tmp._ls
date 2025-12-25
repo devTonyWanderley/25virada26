@@ -338,7 +338,7 @@
 
 ;;;	--CHAMADAS--
 (defun c:teste_lsp(/ lt i)
-  (if (setq lt (top:select-pra-aresta))
+  (while (setq lt (top:select-pra-aresta))
     (top:faz-arestas lt)
     )
   )
@@ -346,4 +346,10 @@
 (defun c:lança-pontos-2d()(top:lança-pontos nil))
 (defun c:lança-pontos-3d()(top:lança-pontos 't))
 (defun c:cotas-e-atributos()(top:mostra-cotas-e-atrs))
+(defun c:faz-arestas(/ lt)
+  (while (setq lt (top:select-pra-aresta))
+    (top:faz-arestas lt)
+    )
+  (princ)
+  )
 (top:inicia)
