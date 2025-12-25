@@ -9,6 +9,7 @@ Arquivo::Arquivo(QWidget *parent): QDialog(parent), ui(new Ui::Arquivo)
     this->setWindowTitle("Adquirir arquivo");
     ui->pbOk->setText("Ler arquivo");
     ui->pteArq->setVisible(false);
+    ui->pteArq->clear();
     Buffer.clear();
     Lido = false;
 }

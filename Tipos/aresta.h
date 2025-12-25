@@ -16,6 +16,7 @@ public:
     Aresta();
     Aresta(Nos<Ponto> *lp);
     Aresta(Nos<Ponto> *lp, const QString v0, const QString v1);
+    Aresta(Nos<Ponto> *lp, const QString ln);
 
     Ponto GetIni();
     Ponto GetFim();

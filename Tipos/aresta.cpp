@@ -33,6 +33,28 @@ Aresta::Aresta(Nos<Ponto> *lp, const QString v0, const QString v1)
     }
 }
 
+Aresta::Aresta(Nos<Ponto> *lp, const QString ln)
+{
+    Lp = lp;
+    QString v0 = ln.left(8), v1 = ln.right(8);
+    Nos<Ponto> *va = GetPonto(v0), *vb = GetPonto(v1);
+    if(!va || !vb)
+        Vi = Vf = "";
+    else
+    {
+        if(va->Valor.GetZ() < vb->Valor.GetZ())
+        {
+            Vi = v0;
+            Vf = v1;
+        }
+        else
+        {
+            Vi = v1;
+            Vf = v0;
+        }
+    }
+}
+
 Nos<Ponto> * Aresta::GetPonto(const QString id)
 {
     Nos<Ponto> * pont = Lp;

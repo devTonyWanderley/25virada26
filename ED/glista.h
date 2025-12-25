@@ -157,6 +157,23 @@ public:
     {
         return (Count == 0);
     }
+
+    void Clear()
+    {
+        if(Empty()) return;
+        Nos<G> *pont;
+        while(Primo != Fim)
+        {
+            pont = Primo;
+            Primo = Primo->Segue;
+            delete pont;
+            Count--;
+        }
+        pont = Primo;
+        Primo = Fim = nullptr;
+        delete pont;
+        Count--;
+    }
 };
 
 #endif // GLISTA_H

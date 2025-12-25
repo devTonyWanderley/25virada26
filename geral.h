@@ -38,7 +38,12 @@ private slots:
 private:
     Ui::Geral *ui;
     Arquivo *cda;
+    Arquivo *cda1;
+    Lista<Ponto> Lp;
+    Lista<Aresta> La;
 
     void teste();
+    bool LerPontos();
+    bool LerArestas();
 };
 #endif // GERAL_H

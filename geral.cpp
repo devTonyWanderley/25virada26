@@ -17,6 +17,19 @@ void Geral::teste()
     //      -> criar um ponto com ln:   ..  ok
     //      -> criar lista de pontos:   ..  ok
     //      -> imprimir os pontos:  ..  ok
+    //..................................................
+    //  ler arquivo de pontos e de arestas
+
+    if(LerPontos())
+    {
+        qDebug()
+            << cda->Buffer.length()
+            << " caracteres em Buffer";
+        //cda->destroy(true, true);
+        cda1 = new Arquivo;
+        cda1->show();
+    }
+    /*
     QString ln;
     Lista<Ponto> lp;
     while(cda->Buffer.length() > 45)
@@ -32,7 +45,6 @@ void Geral::teste()
     uint n = lp.Length();
     for(uint i = 0; i < n; i++)
     {
-        //p = lp.Getn(i);
         qDebug()
             << lp.Getn(i).GetId() << '\t'
             << lp.Getn(i).GetAtr() << '\t'
@@ -55,6 +67,36 @@ void Geral::teste()
         << q.GetX() << '\t'
         << q.GetY() << '\t'
         << q.GetZ();
+    */
+}
+
+bool Geral::LerPontos()
+{
+    QString ln;
+    while(cda->Buffer.length() > 45)
+    {
+        ln = cda->Buffer.left(45);
+        Lp.Pushback(Ponto(ln));
+        cda->Buffer = cda->Buffer.right(cda->Buffer.length() - 46);
+    }
+    qDebug()
+        << "lp tem "
+        << Lp.Length()
+        << " elementos";
+    return (!Lp.Empty());
+}
+
+bool Geral::LerArestas()
+{
+    QString ln;
+    while(cda1->Buffer.length() > 16)
+    {
+        ln = cda1->Buffer.left(16);
+        cda1->Buffer = cda1->Buffer.right(cda1->Buffer.length() - 17);
+        qDebug()
+            << ln;
+    }
+    return true;
 }
 
 void Geral::on_pbOpera_clicked()
