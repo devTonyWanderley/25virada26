@@ -5,8 +5,9 @@
 #include <QFile>
 #include <QFileDialog>
 #include "ed/glista.h"
-#include "tipos/ponto.h"
-#include "tipos/aresta.h"
+//#include "tipos/ponto.h"
+//#include "tipos/aresta.h"
+#include "tipos/face.h"
 
 #define IDIR "C:/2025/Soft/InstLocal/"
 
@@ -17,6 +18,7 @@ QT_END_NAMESPACE
 //  Gerar e exportar superfície
 //      ->  ler e armazenar pontos  ..  ok
 //      ->  ler e armazenar arestas  ..  ok
+//  !!          revés:  revisitar a lógica da classe Aresta !!  programa quebrado   !!
 //      ->  gerar superfície
 //      ->  exportar superfície
 
@@ -33,13 +35,18 @@ private slots:
 
     void on_pbLerArs_clicked();
 
+    void on_pbGSup_clicked();
+
 private:
     Ui::Topografia *ui;
     QString Buffer;
     Lista<Ponto> Lp;
     Lista<Aresta> La;
+    Lista<Face> Lf;
 
     bool LerArquivo(QString dir, QString filtro, QString titulo);
     bool LerArquivo(QString filtro, QString titulo);
+
+    void GeraFaces();
 };
 #endif // TOPOGRAFIA_H

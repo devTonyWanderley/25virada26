@@ -14,6 +14,7 @@ qt_add_executable(Top
     ed/glista.h
     tipos/ponto.cpp tipos/ponto.h
     tipos/aresta.cpp tipos/aresta.h
+    tipos/face.h tipos/face.cpp
 )
 
 qt_add_translations(
