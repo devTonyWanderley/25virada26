@@ -1,9 +1,9 @@
 #ifndef PONTO_H
 #define PONTO_H
 
-#include <QString>
+#include "ecivil.h"
 
-class Ponto
+class Ponto : public ECivil
 {
 private:
     QString Nome;
@@ -14,12 +14,11 @@ private:
 
     double LerDouble(QString arg);
     bool LerLinha(QString &ln, QString &id, QString &atr, double &x, double &y, double &z);
-    QString NormaTexto(QString arg);
 public:
-    Ponto(const QString id, const QString atr, const double x, const double y, const double z);     //  Valores
-    Ponto();                                                                                        //  Vazio
-    Ponto(const Ponto& outro);                                                                      //  Cópia
-    Ponto(const QString ln);                                                                        //  Comprimento fixo
+    Ponto();
+    Ponto(const QString ln);
+    Ponto(const Ponto& outro);
+    Ponto(const QString id, const QString atr, const double x, const double y, const double z);
     void SetId(QString id);
     void SetAtr(QString atr);
     void SetX(double x);

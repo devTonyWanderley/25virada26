@@ -28,6 +28,36 @@ bool planialt::LerArquivo(QString filtro, QString titulo)
     return LerArquivo(IDIR, filtro, titulo);
 }
 
+void planialt::GuardaPontos()
+{
+    if(!Buffer.length()) return;
+    Lp.Clear();
+    while(Buffer.length() > 45)
+    {
+        Lp.Pushback(Ponto(Buffer.left(45)));
+        Buffer = Buffer.right(Buffer.length() - 46);
+    }
+    qDebug()
+        << Lp.Length()
+        << " pontos lidos\nUltima chave "
+        << Lp.Getback().GetKey();
+}
+
+void planialt::GuardaArestas()
+{
+    if(!Buffer.length()) return;
+    La.Clear();
+    while(Buffer.length() > 16)
+    {
+        La.Pushback(Aresta(Buffer.left(16)));
+        Buffer = Buffer.right(Buffer.length() - 17);
+    }
+    qDebug()
+        << La.Length()
+        << " arestas lidas\nUltima chave "
+        << La.Getback().GetKey();
+}
+
 void planialt::on_pbo_clicked()
 {
     if(!Passo)
@@ -36,6 +66,7 @@ void planialt::on_pbo_clicked()
         ui->pte->setEnabled(true);
         ui->pte->setPlainText(Buffer);
         ui->pbo->setText("Ler arquivo de arestas");
+        GuardaPontos();
         Passo++;
         return;
     }
@@ -45,6 +76,7 @@ void planialt::on_pbo_clicked()
         ui->pte->setEnabled(true);
         ui->pte->setPlainText(Buffer);
         ui->pbo->setText("Gerar superfície");
+        GuardaArestas();
         Passo++;
         return;
     }
