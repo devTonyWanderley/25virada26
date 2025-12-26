@@ -11,6 +11,9 @@ qt_add_executable(Top
     topografia.cpp
     topografia.h
     topografia.ui
+    ed/glista.h
+    tipos/ponto.cpp tipos/ponto.h
+    tipos/aresta.cpp tipos/aresta.h
 )
 
 qt_add_translations(
