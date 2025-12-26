@@ -12,9 +12,12 @@ qt_add_executable(tp1
     planialt.h
     planialt.ui
     ed/glista.h
-    tipos/ecivil.h tipos/ecivil.cpp
+
     tipos/ponto.h tipos/ponto.cpp
+    tipos/ecivil.h tipos/ecivil.cpp
     tipos/aresta.h tipos/aresta.cpp
+    tipos/face.h tipos/face.cpp
+
 )
 
 qt_add_translations(

@@ -5,8 +5,13 @@
 
 class ECivil
 {
+private:
+    QString Key;
 public:
     ECivil();
+    QString GetKey();
+    void SetKey(const QString ch);
+
     QString NormaTexto(QString arg);
 };
 

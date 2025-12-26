@@ -2,42 +2,74 @@
 
 Aresta::Aresta()
 {
-    Vi = Vf = "";
-    SetKey("-");
+    Vini = Vfim = nullptr;
 }
 
-Aresta::Aresta(const QString ln)
+Aresta::Aresta(const QString ln, Nos<Ponto> *primo)
 {
-    Vi = NormaTexto(ln.left(8));
-    Vf = NormaTexto(ln.right(8));
-    SetKey((Vi + '-' + Vf));
+    QString va = NormaTexto(ln.left(8)), vb = NormaTexto(ln.right(8));
+    Vini = GetPonto(va, primo);
+    Vfim = GetPonto(vb, primo);
+    if(Vini->Valor.GetZ() > Vfim->Valor.GetZ())
+    {
+        Nos<Ponto> *pont = Vini;
+        Vini = Vfim;
+        Vfim = pont;
+    }
 }
 
-Aresta::Aresta(const QString v0, const QString v1)
+Aresta::Aresta(const Aresta &outra)
 {
-    Vi = v0;
-    Vf = v1;
-    SetKey((Vi + '-' + Vf));
+    Vini = outra.Vini;
+    Vfim = outra.Vfim;
 }
 
-void Aresta::SetIni(const QString v)
+Aresta::Aresta(QString v0, QString v1, Nos<Ponto> *primo)
 {
-    Vi = v;
-    SetKey((Vi + '-' + Vf));
+    v0 = NormaTexto(v0);
+    v1 = NormaTexto(v1);
+    Vini = GetPonto(v0, primo);
+    Vfim = GetPonto(v1, primo);
+    if(Vini->Valor.GetZ() > Vfim->Valor.GetZ())
+    {
+        Nos<Ponto> *pont = Vini;
+        Vini = Vfim;
+        Vfim = pont;
+    }
 }
 
-void Aresta::SetFim(const QString v)
+Nos<Ponto> * Aresta::GetPonto(const QString v, Nos<Ponto> *primo)
 {
-    Vf = v;
-    SetKey((Vi + '-' + Vf));
+    Nos<Ponto> *pont = primo;
+    while(pont)
+    {
+        if(pont->Valor.GetId() == v)
+        {
+            return pont;
+        }
+        pont = pont->Segue;
+    }
+    return nullptr;
 }
 
-QString Aresta::GetIni()
+Nos<Ponto> * Aresta::GetVini()
 {
-    return Vi;
+    return Vini;
 }
 
-QString Aresta::GetFim()
+Nos<Ponto> * Aresta::GetVfim()
 {
-    return Vf;
+    return Vfim;
+}
+
+Aresta Aresta::operator =(const Aresta &outra)
+{
+    Vini = outra.Vini;
+    Vfim = outra.Vfim;
+    return *this;
+}
+
+bool Aresta::operator ==(const Aresta outra)
+{
+    return ((Vini == outra.Vini) && (Vfim == outra.Vfim));
 }

@@ -1,21 +1,25 @@
 #ifndef ARESTA_H
 #define ARESTA_H
 
-#include "ecivil.h"
+#include "ponto.h"
+#include "../ed/gno.h"
 
-class Aresta : public ECivil
+class Aresta : public Ponto
 {
 private:
-    QString Vi;
-    QString Vf;
+    Nos<Ponto> * Vini;
+    Nos<Ponto> * Vfim;
+
+    Nos<Ponto> * GetPonto(const QString v, Nos<Ponto> *primo);
 public:
     Aresta();
-    Aresta(const QString ln);
-    Aresta(const QString v0, const QString v1);
-    void SetIni(const QString v);
-    void SetFim(const QString v);
-    QString GetIni();
-    QString GetFim();
+    Aresta(const QString ln, Nos<Ponto> *primo);
+    Aresta(const Aresta &outra);
+    Aresta(QString v0, QString v1, Nos<Ponto> *primo);
+    Nos<Ponto> * GetVini();
+    Nos<Ponto> * GetVfim();
+    Aresta operator =(const Aresta &outra);
+    bool operator ==(const Aresta outra);
 };
 
 #endif // ARESTA_H

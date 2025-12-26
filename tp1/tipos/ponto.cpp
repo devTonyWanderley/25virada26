@@ -4,7 +4,6 @@ Ponto::Ponto()
 {
     Nome = Atri = "";
     Abci = Orde = Cota = 0;
-    SetKey("");
 }
 
 Ponto::Ponto(const QString ln)
@@ -18,13 +17,11 @@ Ponto::Ponto(const QString ln)
         Abci = xl;
         Orde = yl;
         Cota = zl;
-        SetKey(idl);
     }
     else
     {
         Nome = Atri = "";
         Abci = Orde = Cota = 0;
-        SetKey("");
     }
 }
 
@@ -35,7 +32,6 @@ Ponto::Ponto(const Ponto& outro)
     Abci = outro.Abci;
     Orde = outro.Orde;
     Cota = outro.Cota;
-    SetKey(outro.Nome);
 }
 
 Ponto::Ponto(const QString id, const QString atr, const double x, const double y, const double z)
@@ -128,7 +124,6 @@ Ponto Ponto::operator = (const Ponto &outro)
     Abci = outro.Abci;
     Orde = outro.Orde;
     Cota = outro.Cota;
-    SetKey(outro.Nome);
     return *this;
 }
 

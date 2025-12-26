@@ -1,6 +1,19 @@
 #include "ecivil.h"
 
-ECivil::ECivil() {}
+ECivil::ECivil()
+{
+    Key = "";
+}
+
+QString ECivil::GetKey()
+{
+    return Key;
+}
+
+void ECivil::SetKey(const QString ch)
+{
+    Key = ch;
+}
 
 QString ECivil::NormaTexto(QString arg)
 {

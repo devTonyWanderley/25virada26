@@ -39,8 +39,7 @@ void planialt::GuardaPontos()
     }
     qDebug()
         << Lp.Length()
-        << " pontos lidos\nUltima chave "
-        << Lp.Getback().GetKey();
+        << " pontos lidos";
 }
 
 void planialt::GuardaArestas()
@@ -49,13 +48,76 @@ void planialt::GuardaArestas()
     La.Clear();
     while(Buffer.length() > 16)
     {
-        La.Pushback(Aresta(Buffer.left(16)));
+        La.Pushback(Aresta(Buffer.left(16), Lp.GetPrimo()));
         Buffer = Buffer.right(Buffer.length() - 17);
     }
     qDebug()
         << La.Length()
-        << " arestas lidas\nUltima chave "
-        << La.Getback().GetKey();
+        << " arestas lidas";
+}
+
+void planialt::GeraFaces()
+{
+    Nos<Aresta> *ai = La.GetPrimo(), *aj, *ak;
+    Nos<Ponto> *pa, *pb, *pc;
+    uint n;
+    while(ai)
+    {
+        aj = ai->Segue;
+        n = 0;
+        pa = pb = pc = nullptr;
+        while(aj && n < 2)
+        {
+            if(ai->Valor.GetVini() == aj->Valor.GetVini())
+            {
+                pa = ai->Valor.GetVini();
+                pb = ai->Valor.GetVfim();
+                pc = aj->Valor.GetVfim();
+            }
+            else if(ai->Valor.GetVini() == aj->Valor.GetVfim())
+            {
+                pa = ai->Valor.GetVini();
+                pb = ai->Valor.GetVfim();
+                pc = aj->Valor.GetVini();
+            }
+            else if(ai->Valor.GetVfim() == aj->Valor.GetVfim())
+            {
+                pa = ai->Valor.GetVfim();
+                pb = ai->Valor.GetVini();
+                pc = aj->Valor.GetVini();
+            }
+            else if(ai->Valor.GetVfim() == aj->Valor.GetVini())
+            {
+                pa = ai->Valor.GetVfim();
+                pb = ai->Valor.GetVini();
+                pc = aj->Valor.GetVfim();
+            }
+            if(pa)
+            {
+                ak = aj->Segue;
+                uint m = n;
+                while(ak && m == n)
+                {
+                    if(
+                        (ak->Valor.GetVini() == pb || ak->Valor.GetVini() == pc)
+                        &&
+                        (ak->Valor.GetVfim() == pb || ak->Valor.GetVfim() == pc)
+                        )
+                    {
+                        Lf.Pushback(Face(pa, pb, pc));
+                        n++;
+                    }
+                    ak = ak->Segue;
+                }
+            }
+            pa = pb = pc = nullptr;
+            aj = aj->Segue;
+        }
+        ai = ai->Segue;
+    }
+    qDebug()
+        << Lf.Length()
+        << " faces geradas";
 }
 
 void planialt::on_pbo_clicked()
@@ -77,6 +139,12 @@ void planialt::on_pbo_clicked()
         ui->pte->setPlainText(Buffer);
         ui->pbo->setText("Gerar superfície");
         GuardaArestas();
+        Passo++;
+        return;
+    }
+    if(Passo == 2)
+    {
+        GeraFaces();
         Passo++;
         return;
     }

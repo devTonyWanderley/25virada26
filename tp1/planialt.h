@@ -7,8 +7,8 @@
 #include <QFile>
 #include <QFileDialog>
 #include "ed/glista.h"
-#include "tipos/ponto.h"
 #include "tipos/aresta.h"
+#include "tipos/face.h"
 
 /**
  * Fluxo:
@@ -26,15 +26,13 @@ QT_END_NAMESPACE
 //      ->  ler e armazenar pontos  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  ler pontos e mostrar no PTE ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  armazenar pontos em lista e mostrar no console  ..  ..  ok
-//      ->  ler e armazenar arestas
+//      ->  ler e armazenar arestas ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  ler arestas e mostrar no PTE    ..  ..  ..  ..  ..  ..  ok
 //          ->  rever a classe Aresta   ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  referenciar os pontos através da aresta
 //          ->  armazenar arestas em lista e mostrar no console ..  ..  ok
-//      ->  gerar superfície
-//          ->  criar / rever a classe Face
-//          ->  referenciar os pontos através da face
-//          ->  gerar faces
+//      ->  gerar superfície        ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  criar / rever a classe Face     ..  ..  ..  ..  ..  ..  ok
+//          ->  gerar faces     ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //      ->  exportar superfície
 
 class planialt : public QMainWindow
@@ -54,10 +52,12 @@ private:
     uint Passo;
     Lista<Ponto> Lp;
     Lista<Aresta> La;
+    Lista<Face> Lf;
 
     bool LerArquivo(QString dir, QString filtro, QString titulo);
     bool LerArquivo(QString filtro, QString titulo);
     void GuardaPontos();
     void GuardaArestas();
+    void GeraFaces();
 };
 #endif // PLANIALT_H
