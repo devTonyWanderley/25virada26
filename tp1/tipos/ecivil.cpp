@@ -14,3 +14,9 @@ QString ECivil::NormaTexto(QString arg)
     }
     return arg;
 }
+
+QString ECivil::FillPreTexto(QString tx, QChar c, uint n)
+{
+    while(tx.length() < n) tx = c + tx;
+    return tx;
+}

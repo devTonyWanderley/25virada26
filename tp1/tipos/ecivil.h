@@ -8,6 +8,7 @@ class ECivil
 public:
     ECivil();
     QString NormaTexto(QString arg);
+    QString FillPreTexto(QString tx, QChar c, uint n);
 };
 
 #endif // ECIVIL_H

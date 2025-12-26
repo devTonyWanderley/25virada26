@@ -33,7 +33,10 @@ QT_END_NAMESPACE
 //      ->  gerar superfície        ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  criar / rever a classe Face     ..  ..  ..  ..  ..  ..  ok
 //          ->  gerar faces     ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//      ->  exportar superfície
+//      ->  exportar superfície     ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  complementar texto      ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  apresentar no pte       ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  salvar arquivo de faces     ..  ..  ..  ..  ..  ..  ..  ok
 
 class planialt : public QMainWindow
 {
@@ -56,6 +59,7 @@ private:
 
     bool LerArquivo(QString dir, QString filtro, QString titulo);
     bool LerArquivo(QString filtro, QString titulo);
+    bool SalvarArquivo(QString dir, QString filtro, QString titulo);
     void GuardaPontos();
     void GuardaArestas();
     void GeraFaces();
