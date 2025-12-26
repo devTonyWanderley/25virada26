@@ -4,7 +4,7 @@
 #include "gno.h"
 
 template <class G>
-class Lista             //      ..  reformular ar funções (n):
+class Lista             //      ..  Busca por chave ..  fazer
 {
 private:
     Nos<G> *Primo;
