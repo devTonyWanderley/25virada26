@@ -1,7 +1,7 @@
 #ifndef PLANIALT_H
 #define PLANIALT_H
 
-#define IDIR "C:/2025/Soft/InstLocal/"
+#define IDIR "C:/2025/Soft/IL2/"
 
 #include <QMainWindow>
 #include <QFile>
@@ -22,7 +22,7 @@ QT_BEGIN_NAMESPACE
 namespace Ui {class planialt;}
 QT_END_NAMESPACE
 
-//  Gerar e exportar superfície
+//  Gerar e exportar superfície     ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //      ->  ler e armazenar pontos  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  ler pontos e mostrar no PTE ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  armazenar pontos em lista e mostrar no console  ..  ..  ok
@@ -37,6 +37,12 @@ QT_END_NAMESPACE
 //          ->  complementar texto      ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  apresentar no pte       ..  ..  ..  ..  ..  ..  ..  ..  ok
 //          ->  salvar arquivo de faces     ..  ..  ..  ..  ..  ..  ..  ok
+//
+//  Personalizar extensões de nomes de arquivos, conforme o lsp     ..  ok
+//      ->  Alterar diretório de instâncias padrão      ..  ..  ..  ..  ok
+//      ->  Seguir fluxo de "ler e armazenar pontos" e alterar      ..  ok
+//      ->  Seguir fluxo de "ler e armazenar arestas" e alterar     ..  ok
+//      ->  Seguir fluxo de "salvar arquivo de faces" e alterar     ..  ok
 
 class planialt : public QMainWindow
 {

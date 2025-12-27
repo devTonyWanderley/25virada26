@@ -157,7 +157,7 @@ void planialt::on_pbo_clicked()
 {
     if(!Passo)
     {
-        if(!LerArquivo("Todos (*.*)", "Ler pontos")) return;
+        if(!LerArquivo("Todos (*.pnt)", "Ler pontos")) return;
         ui->pte->setEnabled(true);
         ui->pte->setPlainText(Buffer);
         ui->pbo->setText("Ler arquivo de arestas");
@@ -167,7 +167,7 @@ void planialt::on_pbo_clicked()
     }
     if(Passo == 1)
     {
-        if(!LerArquivo("Todos (*.*)", "Ler arestas")) return;
+        if(!LerArquivo("Todos (*.ars)", "Ler arestas")) return;
         ui->pte->setEnabled(true);
         ui->pte->setPlainText(Buffer);
         ui->pbo->setText("Gerar superfície");
