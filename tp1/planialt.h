@@ -11,38 +11,26 @@
 #include "tipos/face.h"
 
 /**
- * Fluxo:
- *      Ler pontos
- *      Ler arestas
- *      Gerar faces
- *      Salvar faces
+ * Criar contorno da superfície:
+ *  Fluxo:
+ *      Listar as arestas externas
+ *      Ordenar arestas em sequencia
+ *      Salvar polígono
  */
 
 QT_BEGIN_NAMESPACE
 namespace Ui {class planialt;}
 QT_END_NAMESPACE
 
-//  Gerar e exportar superfície     ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//      ->  ler e armazenar pontos  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  ler pontos e mostrar no PTE ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  armazenar pontos em lista e mostrar no console  ..  ..  ok
-//      ->  ler e armazenar arestas ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  ler arestas e mostrar no PTE    ..  ..  ..  ..  ..  ..  ok
-//          ->  rever a classe Aresta   ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  armazenar arestas em lista e mostrar no console ..  ..  ok
-//      ->  gerar superfície        ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  criar / rever a classe Face     ..  ..  ..  ..  ..  ..  ok
-//          ->  gerar faces     ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//      ->  exportar superfície     ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  complementar texto      ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  apresentar no pte       ..  ..  ..  ..  ..  ..  ..  ..  ok
-//          ->  salvar arquivo de faces     ..  ..  ..  ..  ..  ..  ..  ok
-//
-//  Personalizar extensões de nomes de arquivos, conforme o lsp     ..  ok
-//      ->  Alterar diretório de instâncias padrão      ..  ..  ..  ..  ok
-//      ->  Seguir fluxo de "ler e armazenar pontos" e alterar      ..  ok
-//      ->  Seguir fluxo de "ler e armazenar arestas" e alterar     ..  ok
-//      ->  Seguir fluxo de "salvar arquivo de faces" e alterar     ..  ok
+//  Criar e salvar contorno da superfície
+//      ->  criar lista de arestas externas     ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  criar e testar Popn em glista   ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          ->  implementar e testar operador de atribuição em arestas .. cria cópia    ..  ok
+//      ->  criar lista de pontos encadeados a partir da lista de arestas       ..  ..  ..  ok
+//          ->  acrescentar ao lsp a funcionalidade de desenhar o nome do ponto ..  ..  ..  ok
+//      ->  salvar o contorno da superfície     ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
+//          -> dividir GeraFaces() em GeraFaces() e SalvaFaces()    ..  ..  ..  ..  ..  ..  ok
+//          -> criar o SalvaContorno()      ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ..  ok
 
 class planialt : public QMainWindow
 {
@@ -60,7 +48,9 @@ private:
     QString Buffer;
     uint Passo;
     Lista<Ponto> Lp;
+    Lista<Ponto> LPntAux;    //  Auxiliar para armazenamento temporário de pontos
     Lista<Aresta> La;
+    Lista<Aresta> LArAux;    //  Auxiliar para armazenamento temporário de arestas
     Lista<Face> Lf;
 
     bool LerArquivo(QString dir, QString filtro, QString titulo);
@@ -69,5 +59,10 @@ private:
     void GuardaPontos();
     void GuardaArestas();
     void GeraFaces();
+    uint NUsoArEmSup(Aresta ar);
+    bool ArestasExternas();
+    void EncadeiaPontos();
+    bool ExportaFaces();
+    bool ExportaContorno();
 };
 #endif // PLANIALT_H

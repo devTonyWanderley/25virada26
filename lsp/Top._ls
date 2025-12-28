@@ -1,3 +1,7 @@
+;;;	--NOTAS--
+;;;		->existe um bug quando se faz arestas a partir de duas arestas existentes
+;;;		->alterar top:mostra-cotas-e-atrs para mostrar também o nome do ponto
+
 ;;;	--HEAD--
 (setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2025/Soft/IL2/" "pnt")
 		       ("ARESTA" "Abrir arquivo de arestas" "C:/2025/Soft/IL2/" "ars")
@@ -19,9 +23,11 @@
   (while (nth (setq i (if i (1+ i) 0)) #param-leitura)
     (regapp (car (nth i #param-leitura)))
     )
+  (princ "\nEventuais repetições no desenho:\n\tPontos:")
   (setq #pontos (top:ler-pontos-do-desenho))
+  (princ "\n\n\tArestas:")
   (setq #arestas (top:ler-arestas-do-desenho))
-  (princ "TOP carregado com sucesso")
+  (princ "\n\nTOP carregado com sucesso")
   )
 
 ;;;		--I/O--
@@ -165,18 +171,33 @@
     )
   )
 
+(defun top:elimina-repetição(arg / r)
+  (while (cdr arg)
+    (progn
+      (if (null (member (car arg) (cdr arg)))
+	(setq r (cons (car arg) r))
+	(print (car arg))
+	)
+      (setq arg (cdr arg))
+      )
+    )
+;;;  (reverse (cons (car arg) r))		Substituido pela linha abaixo
+  (cons (car arg) r)
+  )
+
 (defun top:varre-xdata(tipo / en len)
   (while (setq en (if en (entnext en) (entnext)))
     (if (= (top:tipo-de-xdata en) tipo)
       (setq len (cons (top:ler-xdata en) len))
       )
     )
-  (reverse len)
+;;;  (reverse len)		Substituido pela linha abaixo
+  (top:elimina-repetição len)
   )
 
 (defun top:ler-pontos-do-desenho() (setq #pontos (top:varre-xdata "PONTO")))
 
-(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))
+(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))	;	Eliminar eventual repetição de arestas
 
 (defun top:select-pra-aresta(/ n en lt)
   (while (< (setq n (if n n 0)) 6)
@@ -432,7 +453,7 @@
   (princ)
   )
 
-(defun c:exporta-arestas()
+(defun c:exporta-arestas()	;	Eliminar eventual repetição de arestas
   (top:ler-arestas-do-desenho)
   (top:exportar-arquivo "ARESTA" (mapcar 'top:ln-aresta-export #arestas))
   (princ)

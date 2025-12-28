@@ -181,7 +181,6 @@
       (setq arg (cdr arg))
       )
     )
-;;;  (reverse (cons (car arg) r))		Substituido pela linha abaixo
   (cons (car arg) r)
   )
 
@@ -191,13 +190,12 @@
       (setq len (cons (top:ler-xdata en) len))
       )
     )
-;;;  (reverse len)		Substituido pela linha abaixo
   (top:elimina-repetição len)
   )
 
 (defun top:ler-pontos-do-desenho() (setq #pontos (top:varre-xdata "PONTO")))
 
-(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))	;	Eliminar eventual repetição de arestas
+(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))
 
 (defun top:select-pra-aresta(/ n en lt)
   (while (< (setq n (if n n 0)) 6)
@@ -237,13 +235,17 @@
   (if (setq lt (top:varre-xdata "PONTO"))
     (while (nth (setq i (if i (1+ i) 0)) lt)
       (progn
-	(setq x (car (last (nth i lt)))
+	(setq x (+ (car (last (nth i lt))) (* (caddr (assoc "PONTO" #param-desenho)) 0.7))
 	      y (- (cadr (last (nth i lt))) (* (caddr (assoc "PONTO" #param-desenho)) 2.5))
 	      h (* 1.5 (caddr (assoc "PONTO" #param-desenho)))
 	      tx (rtos (last (last (nth i lt))) 2 3)
 	      )
 	(entmake (list (cons 0 "TEXT") (cons 8 "_Cotas") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))
-	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 3.5))
+	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 1.75))
+	      tx (car (nth i lt))
+	      )
+	(entmake (list (cons 0 "TEXT") (cons 8 "_Nomes") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))
+	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 1.75))
 	      tx (cadr (nth i lt))
 	      )
 	(entmake (list (cons 0 "TEXT") (cons 8 "_Atributos") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))

@@ -148,6 +148,27 @@ public:
         return r;
     }
 
+    G Popn(uint n)
+    {
+        G r;
+        if(Empty()) return r;
+        if(!n) return Popfront();
+        if(n >= Count) return Popback();
+        uint i = 0;
+        Nos<G> *pontl = Primo, *ponta;
+        while(i < n)
+        {
+            ponta = pontl;
+            pontl = pontl->Segue;
+            i++;
+        }
+        r = pontl->Valor;
+        ponta->Segue = pontl->Segue;
+        delete pontl;
+        Count --;
+        return r;
+    }
+
     uint Length()
     {
         return Count;
@@ -173,6 +194,13 @@ public:
         Primo = Fim = nullptr;
         delete pont;
         Count--;
+    }
+
+    Lista<G> operator =(const Lista<G> outra)
+    {
+        Clear();
+        for(uint i = 0; i < outra.Length(); i++) Pushback(outra.Getn(i));
+        return *this;
     }
 };
 
