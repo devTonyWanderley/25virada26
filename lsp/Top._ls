@@ -1,19 +1,49 @@
 ;;;	--NOTAS--
 ;;;		->existe um bug quando se faz arestas a partir de duas arestas existentes
-;;;		->alterar top:mostra-cotas-e-atrs para mostrar também o nome do ponto
+;;;		->no sistema:
+;;;			->elabora/descerver fluxo de trabalho do usuário	..	..	ok
+;;;		->no lsp:
+;;;			->lançar pontos criando layer por atributo	..	..	..	ok
+;;;			->desenhar contorno	..
+;;;				->carregar eventuais contornos existentes no desenho	..	ok
+;;;				->importar arquivo con e atribuir um nome	..
+;;;			->carregar variável de lista de superfícies
+;;;		->no cpp:
+;;;			->análise e bem provável reformulação desde as classes de tipos, passando pela interface e modulação do programa
+
+;;;	--FLUXO DE TRABALHO DO USUÁRIO--
+;;;		->ler pontos do dxf fornecido pela Leica e gerar o pnt	..	..	..	..	..	..	..	c++
+;;;		->lançar pontos no desenho auxiliar de superfície primitiva	..	..	..	..	..	..	lsp	..	desenho 1
+;;;		->fazer malha no desenho auxiliar de superfície primitiva	..	..	..	..	..	..	lsp	..	desenho 1
+;;;		->exportar pontos (novo pnt) e malha da primitiva	..	..	..	..	..	..	..	lsp	..	desenho 1
+;;;		->importar pontos e malha	..	..	..	..	..	..	..	..	..	..	c++
+;;;		->gerar superfície primitiva, incluindo seu contorno	..	..	..	..	..	..	..	c++
+;;;		->exportar a primitiva com seu contorno	..	..	..	..	..	..	..	..	..	c++
+;;;		->importar pontos (layer por atributo) e primitiva em desenho auxiliar para projetar traçado(s)	..	..	lsp	..	desenho 2
+;;;			->talvez projetar os traçados e seções no passo 3. Não estou inclinado a isso
+;;;		->esboçar traçados e seções da primitiva em planta	..	..	..	..	..	..	..	lsp	..	desenho 2
+;;;		->exportar esboço de traçados e seções da primitiva em planta	..	..	..	..	..	..	lsp	..	desenho 2
+;;;		->importar superfície primitiva e esboço do traçado	..	..	..	..	..	..	..	c++
+;;;		->criar detalhamento do(s) traçado(s) em planta, perfil e seções	..	..	..	..	..	c++
+;;;		->exportar detalhamento prévio do traçado	..	..	..	..	..	..	..	..	c++
+;;;		->importar primitiva + detalhamento prévio do traçado	..	..	..	..	..	..	..	lsp	..	desenho 3
+;;;		->fazer ajustes finais e imprimir ou rever etapas anteriores	..	..	..	..	..	..	lsp/cad	..	desenho 3
 
 ;;;	--HEAD--
 (setq #param-leitura '(("PONTO" "Abrir arquivo de pontos" "C:/2025/Soft/IL2/" "pnt")
 		       ("ARESTA" "Abrir arquivo de arestas" "C:/2025/Soft/IL2/" "ars")
 		       ("FACE" "Abrir arquivo de faces" "C:/2025/Soft/IL2/" "sup")
+		       ("CONTORNO" "Abrir arquivo de faces" "C:/2025/Soft/IL2/" "con")
 		       )
       #param-export '(("PONTO" "Salvar arquivo de pontos" "C:/2025/Soft/IL2/" "pnt")
 		      ("ARESTA" "Salvar arquivo de arestas" "C:/2025/Soft/IL2/" "ars")
 		      ("FACE" "Salvar arquivo de faces" "C:/2025/Soft/IL2/" "sup")
+		      ("CONTORNO" "Abrir arquivo de faces" "C:/2025/Soft/IL2/" "con")
 		      )
       #param-desenho '(("PONTO" "_Pontos" 0.1)
 		       ("ARESTA" "_Arestas")
 		       ("FACE" "_Faces")
+		       ("CONTORNO" "_Contornos")
 		       )
       )
 
@@ -27,6 +57,8 @@
   (setq #pontos (top:ler-pontos-do-desenho))
   (princ "\n\n\tArestas:")
   (setq #arestas (top:ler-arestas-do-desenho))
+  (princ "\n\n\tContornos:")
+  (setq #contornos (top:ler-contornos-do-desenho))
   (princ "\n\nTOP carregado com sucesso")
   )
 
@@ -181,7 +213,6 @@
       (setq arg (cdr arg))
       )
     )
-;;;  (reverse (cons (car arg) r))		Substituido pela linha abaixo
   (cons (car arg) r)
   )
 
@@ -191,13 +222,14 @@
       (setq len (cons (top:ler-xdata en) len))
       )
     )
-;;;  (reverse len)		Substituido pela linha abaixo
   (top:elimina-repetição len)
   )
 
 (defun top:ler-pontos-do-desenho() (setq #pontos (top:varre-xdata "PONTO")))
 
-(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))	;	Eliminar eventual repetição de arestas
+(defun top:ler-arestas-do-desenho() (setq #arestas (top:varre-xdata "ARESTA")))
+
+(defun top:ler-contornos-do-desenho() (setq #contornos (top:varre-xdata "CONTORNO")))
 
 (defun top:select-pra-aresta(/ n en lt)
   (while (< (setq n (if n n 0)) 6)
@@ -237,13 +269,17 @@
   (if (setq lt (top:varre-xdata "PONTO"))
     (while (nth (setq i (if i (1+ i) 0)) lt)
       (progn
-	(setq x (car (last (nth i lt)))
+	(setq x (+ (car (last (nth i lt))) (* (caddr (assoc "PONTO" #param-desenho)) 0.7))
 	      y (- (cadr (last (nth i lt))) (* (caddr (assoc "PONTO" #param-desenho)) 2.5))
 	      h (* 1.5 (caddr (assoc "PONTO" #param-desenho)))
 	      tx (rtos (last (last (nth i lt))) 2 3)
 	      )
 	(entmake (list (cons 0 "TEXT") (cons 8 "_Cotas") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))
-	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 3.5))
+	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 1.75))
+	      tx (car (nth i lt))
+	      )
+	(entmake (list (cons 0 "TEXT") (cons 8 "_Nomes") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))
+	(setq y (+ y (* (caddr (assoc "PONTO" #param-desenho)) 1.75))
 	      tx (cadr (nth i lt))
 	      )
 	(entmake (list (cons 0 "TEXT") (cons 8 "_Atributos") (list 10 x y 0.0) (cons 40 h) (cons 1 tx)))
@@ -427,6 +463,21 @@
   (princ)
   )
 
+(defun top:lança-pontos-por-atr(3d / lt i a)
+  (setvar "pdmode" 35)
+  (setvar "pdsize" (caddr (assoc "PONTO" #param-desenho)))
+  (if (setq lt (top:ler-arquivo "PONTO"))
+    (while (nth (setq i (if i (1+ i) 0)) lt)
+      (setq a (top:ler-ln-ponto (nth i lt))
+	    a (top:faz-point a (strcat "_" (cadr a)) 3d)
+	    )
+      )
+    (princ "erro ao lançar pontos")
+    )
+  (top:ler-pontos-do-desenho)
+  (princ)
+  )
+
 ;;;	--CHAMADAS--
 (defun c:teste_lsp(/ lt i)
   (while (setq lt (top:select-pra-aresta))
@@ -437,6 +488,10 @@
 (defun c:lança-pontos-2d()(top:lança-pontos nil))
   
 (defun c:lança-pontos-3d()(top:lança-pontos 't))
+
+(defun c:lança-pontos-atr-2d()(top:lança-pontos-por-atr nil))
+  
+(defun c:lança-pontos-atr-3d()(top:lança-pontos-por-atr 't))
   
 (defun c:cotas-e-atributos()(top:mostra-cotas-e-atrs))
   
@@ -453,9 +508,17 @@
   (princ)
   )
 
-(defun c:exporta-arestas()	;	Eliminar eventual repetição de arestas
+(defun c:exporta-arestas()
   (top:ler-arestas-do-desenho)
   (top:exportar-arquivo "ARESTA" (mapcar 'top:ln-aresta-export #arestas))
+  (princ)
+  )
+
+(defun c:importar-contorno(/ id)
+  (if (/= (setq id (getstring "Nome do contorno")) "")
+    (alert "Agora é pedir o nome do arquivo")
+    (alert "cancelado")
+    )
   (princ)
   )
 
